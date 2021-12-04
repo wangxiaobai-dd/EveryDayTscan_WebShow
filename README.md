@@ -4,7 +4,9 @@
 1. Run
 
 run Source/BackEnd/bin/EveryDayScan using root
-or 
+
+or
+
 run Source/BackEnd/src/build.sh
 
 We can get results by visiting http://ip:port
