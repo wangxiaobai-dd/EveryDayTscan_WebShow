@@ -1,7 +1,7 @@
 
 每日自动调用Tscancode, Web 查看结果
 
-1. Run
+## 1 Run
 
 run Source/BackEnd/bin/EveryDayScan using root
 
@@ -9,9 +9,9 @@ or
 
 run Source/BackEnd/src/build.sh
 
-We can get results by visiting http://ip:port
+We can get results by visiting `http://yourip:port`
 
-2. See Source/BackEnd/bin/config.ini
+## 2 See Source/BackEnd/bin/config.ini
 
 [Project]
 Path: Scan path of project
