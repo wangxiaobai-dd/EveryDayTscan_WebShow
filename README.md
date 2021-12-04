@@ -37,3 +37,8 @@ Path = ../../../everyday.log
 
 [Port]
 Port = 9100
+
+## 3 Example
+We can get daily results and all results
+
+![image](https://github.com/wangxiaobai-dd/EveryDayTscan_WebShow/blob/4e2bfc156826fa73ee78bcd75b3fe562199d40f0/images/example.png)
