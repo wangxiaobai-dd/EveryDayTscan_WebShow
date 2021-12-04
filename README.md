@@ -2,6 +2,7 @@
 每日自动调用Tscancode, Web 查看结果
 
 1. Run
+
 run Source/BackEnd/bin/EveryDayScan using root
 or 
 run Source/BackEnd/src/build.sh
