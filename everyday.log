@@ -1,0 +1,62 @@
+2021/12/04 15:34:55 result.2021-11-27
+2021/12/04 15:34:55 readRecord,path: ../../../Tscancode/output/result.2021-11-27 2021-11-27
+2021/12/04 15:34:55 result.2021-11-28
+2021/12/04 15:34:55 readRecord,path: ../../../Tscancode/output/result.2021-11-28 2021-11-28
+2021/12/04 15:34:55 result.2021-11-29
+2021/12/04 15:34:55 readRecord,path: ../../../Tscancode/output/result.2021-11-29 2021-11-29
+2021/12/04 15:34:55 result.2021-11-30
+2021/12/04 15:34:55 readRecord,path: ../../../Tscancode/output/result.2021-11-30 2021-11-30
+2021/12/04 15:34:55 result.2021-12-03
+2021/12/04 15:34:55 readRecord,path: ../../../Tscancode/output/result.2021-12-03 2021-12-03
+2021/12/04 15:34:55 result.2021-12-04
+2021/12/04 15:34:55 readRecord,path: ../../../Tscancode/output/result.2021-12-04 2021-12-04
+2021/12/04 15:35:05 getDayResult,date: 2021-12-03
+2021/12/04 15:35:05 generateDayResult,date: 2021-12-03
+2021/12/04 15:35:05 getRecordDiff
+2021/12/04 15:35:05 Set{[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:21]: (Information) Memory leak: a, [/home/ubuntu/MyRep/cpp/TestMass.cpp:456]: (Warning) Memory leak: test, [/home/ubuntu/MyRep/cpp/TestTemplate.cpp:31]: (Warning) Member variable 'Base::aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaavalue2****************************()()(),' is not initialized in the constructor., [/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:18]: (Critical) Memory leak: a, [/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:19]: (Warning) Memory leak: a, [/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:20]: (Serious) Memory leak: a, [/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:641]: (Information) memset() called to fill 0 bytes of 'size'.}
+2021/12/04 15:35:05 ["[/home/ubuntu/MyRep/cpp/TestMass.cpp:456]: (Warning) Memory leak: test","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:18]: (Critical) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:19]: (Warning) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:20]: (Serious) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:21]: (Information) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestTemplate.cpp:31]: (Warning) Member variable 'Base::aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaavalue2****************************()()(),' is not initialized in the constructor.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:641]: (Information) memset() called to fill 0 bytes of 'size'."] d: 2021-12-03 offset: 2021-11-30
+2021/12/04 15:35:23 getDayResult,date: 2021-11-30
+2021/12/04 15:35:23 generateDayResult,date: 2021-11-30
+2021/12/04 15:35:23 getRecordDiff
+2021/12/04 15:35:23 Set{[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:643]: (Serious) memset() called to fill 0 bytes of 'size'., [/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:644]: (Serious) memset() called to fill 0 bytes of 'size'., [/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:645]: (Serious) memset() called to fill 0 bytes of 'size'., [/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:642]: (Serious) memset() called to fill 0 bytes of 'size'.}
+2021/12/04 15:35:23 ["[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:642]: (Serious) memset() called to fill 0 bytes of 'size'.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:643]: (Serious) memset() called to fill 0 bytes of 'size'.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:644]: (Serious) memset() called to fill 0 bytes of 'size'.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:645]: (Serious) memset() called to fill 0 bytes of 'size'."] d: 2021-11-30 offset: 2021-11-29
+2021/12/04 15:35:24 getDayResult,date: 2021-12-03
+2021/12/04 15:35:24 ["[/home/ubuntu/MyRep/cpp/TestMass.cpp:456]: (Warning) Memory leak: test","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:18]: (Critical) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:19]: (Warning) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:20]: (Serious) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:21]: (Information) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestTemplate.cpp:31]: (Warning) Member variable 'Base::aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaavalue2****************************()()(),' is not initialized in the constructor.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:641]: (Information) memset() called to fill 0 bytes of 'size'."]
+2021/12/04 15:35:27 getDayResult,date: 2021-11-30
+2021/12/04 15:35:27 ["[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:642]: (Serious) memset() called to fill 0 bytes of 'size'.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:643]: (Serious) memset() called to fill 0 bytes of 'size'.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:644]: (Serious) memset() called to fill 0 bytes of 'size'.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:645]: (Serious) memset() called to fill 0 bytes of 'size'."]
+2021/12/04 15:35:27 getDayResult,date: 2021-12-03
+2021/12/04 15:35:27 ["[/home/ubuntu/MyRep/cpp/TestMass.cpp:456]: (Warning) Memory leak: test","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:18]: (Critical) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:19]: (Warning) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:20]: (Serious) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:21]: (Information) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestTemplate.cpp:31]: (Warning) Member variable 'Base::aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaavalue2****************************()()(),' is not initialized in the constructor.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:641]: (Information) memset() called to fill 0 bytes of 'size'."]
+2021/12/04 15:35:28 getDayResult,date: 2021-12-04
+2021/12/04 15:35:28 generateDayResult,date: 2021-12-04
+2021/12/04 15:35:28 getRecordDiff
+2021/12/04 15:35:28 Set{[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:641]: (Serious) memset() called to fill 0 bytes of 'size'., [/home/ubuntu/MyRep/cpp/TestTemplate.cpp:31]: (Warning) Member variable 'Base::value2,' is not initialized in the constructor.}
+2021/12/04 15:35:28 ["[/home/ubuntu/MyRep/cpp/TestTemplate.cpp:31]: (Warning) Member variable 'Base::value2,' is not initialized in the constructor.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:641]: (Serious) memset() called to fill 0 bytes of 'size'."] d: 2021-12-04 offset: 2021-12-03
+2021/12/04 15:35:29 getDayResult,date: 2021-12-03
+2021/12/04 15:35:29 ["[/home/ubuntu/MyRep/cpp/TestMass.cpp:456]: (Warning) Memory leak: test","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:18]: (Critical) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:19]: (Warning) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:20]: (Serious) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:21]: (Information) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestTemplate.cpp:31]: (Warning) Member variable 'Base::aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaavalue2****************************()()(),' is not initialized in the constructor.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:641]: (Information) memset() called to fill 0 bytes of 'size'."]
+2021/12/04 15:35:31 getDayResult,date: 2021-11-30
+2021/12/04 15:35:31 ["[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:642]: (Serious) memset() called to fill 0 bytes of 'size'.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:643]: (Serious) memset() called to fill 0 bytes of 'size'.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:644]: (Serious) memset() called to fill 0 bytes of 'size'.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:645]: (Serious) memset() called to fill 0 bytes of 'size'."]
+2021/12/04 15:35:31 getDayResult,date: 2021-11-28
+2021/12/04 15:35:31 generateDayResult,date: 2021-11-28
+2021/12/04 15:35:31 getRecordDiff
+2021/12/04 15:35:31 Set{haah}
+2021/12/04 15:35:31 ["haah"] d: 2021-11-28 offset: 2021-11-27
+2021/12/04 15:35:31 getDayResult,date: 2021-11-29
+2021/12/04 15:35:31 generateDayResult,date: 2021-11-29
+2021/12/04 15:35:31 getRecordDiff
+2021/12/04 15:35:31 Set{hehehe}
+2021/12/04 15:35:31 ["hehehe"] d: 2021-11-29 offset: 2021-11-28
+2021/12/04 15:35:31 getDayResult,date: 2021-11-27
+2021/12/04 15:35:31 generateDayResult,date: 2021-11-27
+2021/12/04 15:35:32 getDayResult,date: 2021-11-28
+2021/12/04 15:35:32 ["haah"]
+2021/12/04 15:35:34 getDayResult,date: 2021-11-29
+2021/12/04 15:35:34 ["hehehe"]
+2021/12/04 15:35:35 getDayResult,date: 2021-11-30
+2021/12/04 15:35:35 ["[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:642]: (Serious) memset() called to fill 0 bytes of 'size'.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:643]: (Serious) memset() called to fill 0 bytes of 'size'.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:644]: (Serious) memset() called to fill 0 bytes of 'size'.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:645]: (Serious) memset() called to fill 0 bytes of 'size'."]
+2021/12/04 15:35:35 getDayResult,date: 2021-12-03
+2021/12/04 15:35:35 ["[/home/ubuntu/MyRep/cpp/TestMass.cpp:456]: (Warning) Memory leak: test","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:18]: (Critical) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:19]: (Warning) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:20]: (Serious) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:21]: (Information) Memory leak: a","[/home/ubuntu/MyRep/cpp/TestTemplate.cpp:31]: (Warning) Member variable 'Base::aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaavalue2****************************()()(),' is not initialized in the constructor.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:641]: (Information) memset() called to fill 0 bytes of 'size'."]
+2021/12/04 15:35:36 getDayResult,date: 2021-12-04
+2021/12/04 15:35:36 ["[/home/ubuntu/MyRep/cpp/TestTemplate.cpp:31]: (Warning) Member variable 'Base::value2,' is not initialized in the constructor.","[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:641]: (Serious) memset() called to fill 0 bytes of 'size'."]
+2021/12/04 15:35:38 getAllResult 2021-12-04
+2021/12/04 15:35:38 getRecordDiff
+2021/12/04 15:35:38 Set{[/home/ubuntu/MyRep/cpp/TestMove.cpp:169]: (Warning) Memory leak: myB, [/home/ubuntu/MyRep/cpp/TestMove.cpp:169]: (Warning) Memory leak: myC, [/home/ubuntu/MyRep/cpp/TestNullPtr.cpp:14]: (Critical) Dereferencing null pointer [a], [a] is assigned with null at line 13., [/home/ubuntu/MyRep/cpp/TestDynLib/NFDynLib.h:25]: (Warning) Member variable 'NFDynLib::mInst,' is not initialized in the constructor., () Tscancode cannot find all the include files (use --check-config for details), [/home/ubuntu/MyRep/cpp/TestMass.cpp:456]: (Warning) Memory leak: test, [/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:17]: (Warning) Memory leak: a, [/home/ubuntu/MyRep/cpp/TestMove.cpp:169]: (Warning) Memory leak: myA, [/home/ubuntu/MyRep/cpp/TestLambda.cpp:156]: (Warning) Memory leak: a, [/home/ubuntu/MyRep/cpp/TestTemplate.cpp:31]: (Warning) Member variable 'Base::value2,' is not initialized in the constructor., [/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:641]: (Serious) memset() called to fill 0 bytes of 'size'.}

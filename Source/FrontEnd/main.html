@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>代码检查结果</title>
+		<link rel="stylesheet" type="text/css" href="../../Plugin/Bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="../FrontEnd/main.css">
+		<script type="text/javascript" src="../../Plugin/jquery/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript" src="../../Plugin/Bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../../Plugin/Vuejs/vue.min.js"></script>
+		<script type="text/javascript" src="../../Plugin/Axios/axios.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<div class="page-header">
+						<h1> 服务器代码检查</h1>
+					</div>
+					<div class="row clearfix margintop">
+						<div class="col-md-2">
+							<div class="btn mybtn">选项：</div>
+							<div class="btn-group" id="option">
+								<button class="btn btn-default btnfix" id="show-type">[[selected]]</button><button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
+								<ul class="dropdown-menu" v-on:click.prevent>
+									<li> <a href="#" v-on:click="makeSelect(1)">昨日新增</a> </li>
+									<li> <a href="#" v-on:click="makeSelect(2)">全部</a> </li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-md-3" id="pag">
+								<ul class="pagination">
+									<li>
+										<a v-bind:class="disable==1?'btn disabled disbtn':''" href="#" v-on:click="selectDate(-1)">Prev</a>
+									</li>
+									<li>
+										<a class="btn disabled" href="#">[[date]]</a>
+									</li>
+									<li>
+										<a v-bind:class="disable==2?'btn disabled disbtn':''" href="#" v-on:click="selectDate(1)">Next</a>
+									</li>
+								</ul>
+						</div>
+					<div id="result" v-cloak>
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th></th>
+									<th>文件</th>
+									<th>异常</th>
+									<th>级别</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(tmp,index) in results" v-bind:class="[tmp.type==1?'danger':'',tmp.type==2?'info':'',tmp.type==3?'warning':'',tmp.type==4?'success':'']">
+									<td>[[index+1]].</td>
+									<td>[[tmp.file]]</td>
+									<td>[[tmp.info]]</td>
+									<td>[[tmp.level]]</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<script type="text/javascript" src="../FrontEnd/main.js"></script>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

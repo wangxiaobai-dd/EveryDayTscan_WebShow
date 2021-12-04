@@ -1,0 +1,12 @@
+[/home/ubuntu/MyRep/cpp/TestDynLib/NFDynLib.h:25]: (Warning) Member variable 'NFDynLib::mInst,' is not initialized in the constructor.
+[/home/ubuntu/MyRep/cpp/TestLambda.cpp:156]: (Warning) Memory leak: a
+[/home/ubuntu/MyRep/cpp/TestMass.cpp:436]: (Warning) Memory leak: test
+[/home/ubuntu/MyRep/cpp/TestMove.cpp:169]: (Warning) Memory leak: myA
+[/home/ubuntu/MyRep/cpp/TestMove.cpp:169]: (Warning) Memory leak: myB
+[/home/ubuntu/MyRep/cpp/TestMove.cpp:169]: (Warning) Memory leak: myC
+[/home/ubuntu/MyRep/cpp/TestNullPtr.cpp:14]: (Critical) Dereferencing null pointer [a], [a] is assigned with null at line 13.
+[/home/ubuntu/MyRep/cpp/TestPtrSize.cpp:17]: (Warning) Memory leak: a
+[/home/ubuntu/MyRep/cpp/TestTemplate.cpp:31]: (Warning) Member variable 'Base::value2,' is not initialized in the constructor.
+[/home/ubuntu/MyRep/cpp/nvwa/debug_new.cpp:641]: (Serious) memset() called to fill 0 bytes of 'size'.
+haah
+() Tscancode cannot find all the include files (use --check-config for details)

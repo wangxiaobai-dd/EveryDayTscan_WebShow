@@ -1,0 +1,46 @@
+.mybtn
+{
+	padding-left:0px;
+	cursor: default;
+}
+
+.mybtn:active
+{
+	box-shadow: none;
+}
+
+.table
+{
+	margin-top:60px;
+}
+
+.btnfix
+{
+	width: 80px
+}
+
+.pagination
+{
+	margin-top:0px;
+	margin-left:20px;
+}
+
+.pagination li a
+{
+	color:#333;
+}
+
+.pagination > li > a:focus
+{
+	background-color:#fff;
+}
+
+.margintop
+{
+	margin-top:30px;
+}
+
+[v-cloak]
+{
+	display: none !important;
+}
