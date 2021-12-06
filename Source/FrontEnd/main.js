@@ -124,6 +124,7 @@ var pagVue = new Vue({
 	},
 	methods:{
 		selectDate:function(value){
+			this.disable = 0
 			if(dates.length == 0)
 				return
 			if(value == 0){
@@ -143,9 +144,9 @@ var pagVue = new Vue({
 				resultVue.getDayResult()
 			}
 			if(dateIndex == 0)
-				this.disable = 1
+				this.disable += 1
 			else if(dateIndex == dates.length - 1)
-				this.disable = 2
+				this.disable += 2
 			else
 				this.disable = 0
 		}

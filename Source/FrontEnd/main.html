@@ -31,13 +31,13 @@
 						<div class="col-md-3" id="pag">
 								<ul class="pagination">
 									<li>
-										<a v-bind:class="disable==1?'btn disabled disbtn':''" href="#" v-on:click="selectDate(-1)">Prev</a>
+										<a v-bind:class="disable==1||disable==3?'btn disabled disbtn':''" href="#" v-on:click="selectDate(-1)">Prev</a>
 									</li>
 									<li>
 										<a class="btn disabled" href="#">[[date]]</a>
 									</li>
 									<li>
-										<a v-bind:class="disable==2?'btn disabled disbtn':''" href="#" v-on:click="selectDate(1)">Next</a>
+										<a v-bind:class="disable==2||disable==3?'btn disabled disbtn':''" href="#" v-on:click="selectDate(1)">Next</a>
 									</li>
 								</ul>
 						</div>

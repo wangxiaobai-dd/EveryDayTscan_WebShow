@@ -73,7 +73,7 @@ func main() {
 	http.Handle("/FrontEnd/", http.StripPrefix("/FrontEnd/", http.FileServer(http.Dir(FrontEnd))))
 	//generateDayResult(getFormatRTC())
 
-	ticker := time.NewTicker(time.Second * 2)
+	ticker := time.NewTicker(time.Second * 60)
 	defer ticker.Stop()
 	go func() {
 		for range ticker.C {
