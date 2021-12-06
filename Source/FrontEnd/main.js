@@ -145,15 +145,9 @@ var pagVue = new Vue({
 			}
 			if(dateIndex == 0)
 				this.disable += 1
-			else if(dateIndex == dates.length - 1)
+			if(dateIndex == dates.length - 1)
 				this.disable += 2
-			else
-				this.disable = 0
 		}
 	}
 });
 
-//todo 排序 
-//测试 tscan扫描当天 数据
-//主动刷新页面 请求
-//svnup
