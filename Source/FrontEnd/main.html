@@ -11,13 +11,13 @@
 		<script type="text/javascript" src="../../Plugin/Axios/axios.min.js"></script>
 	</head>
 	<body>
-		<div class="container">
+		<div class="container" id="container">
 			<div class="row clearfix">
-				<div class="col-md-12 column">
+				<div class="col-md-12 column" >
 					<div class="page-header">
 						<h1> 服务器代码检查</h1>
 					</div>
-					<div class="row clearfix margintop">
+					<div class="row clearfix margintop" >
 						<div class="col-md-2">
 							<div class="btn mybtn">选项：</div>
 							<div class="btn-group" id="option">
@@ -28,9 +28,9 @@
 								</ul>
 							</div>
 						</div>
-						<div class="col-md-1">
-							<button class="btn btn-info" v-bind:class="{'active': isAICheck}" v-on:click="toggleAICheck">
-								AI 检查结果
+						<div class="col-md-1" >
+							<button class="btn btn-info" v-bind:class="{isAICheck}" v-on:click="toggleAICheck()">
+								[[buttonText]]
 							</button>
 						</div>
 						<div class="col-md-3" id="pag">
@@ -58,13 +58,14 @@
 							</thead>
 							<tbody>
 								<tr v-for="(tmp,index) in results" v-bind:class="[tmp.type==1?'danger':'',tmp.type==2?'info':'',tmp.type==3?'warning':'',tmp.type==4?'success':'']">
-									<td>[[index+1]].</td>
+									<td>[[index+1]]</td>
 									<td>[[tmp.file]]</td>
 									<td>[[tmp.info]]</td>
 									<td>[[tmp.level]]</td>
 								</tr>
 							</tbody>
 						</table>
+
 
 						<div v-if="isAICheck">
 

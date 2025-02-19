@@ -63,12 +63,17 @@ func getRecordDate(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(bytes))
 }
 
+func getDayAIResult(w http.ResponseWriter, r *http.Request) {
+
+}
+
 func main() {
 
 	http.HandleFunc("/", showPage)
 	http.HandleFunc("/getDay", getDayResult)
 	http.HandleFunc("/getAll", getAllResult)
 	http.HandleFunc("/getRecord", getRecordDate)
+	http.HandleFunc("/getAIDay", getDayAIResult)
 	http.Handle("/Plugin/", http.StripPrefix("/Plugin/", http.FileServer(http.Dir(Plugin))))
 	http.Handle("/FrontEnd/", http.StripPrefix("/FrontEnd/", http.FileServer(http.Dir(FrontEnd))))
 	//generateDayResult(getFormatRTC())

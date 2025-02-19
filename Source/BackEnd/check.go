@@ -26,6 +26,7 @@ var checkToday bool
 
 // scan record on that day
 var recordMap map[string]string
+var recordAIMap map[string]string
 
 // diff with previous day
 var resultMap sync.Map
@@ -37,7 +38,7 @@ func init() {
 		panic(err)
 	}
 	dir := getConfigStr("ScanTool", "OutputDir")
-	files, err := ioutil.ReadDir(dir)
+	files, err := os.ReadDir(dir)
 	if err != nil {
 		//panic(err)
 		log.Println(err)
@@ -57,6 +58,20 @@ func init() {
 		}
 		log.Println(f.Name())
 		readRecord(dir + f.Name())
+	}
+	// AI Result
+	recordAIMap = make(map[string]string)
+	aiDir := getConfigStr("ScanAI", "OutputDir")
+	files, err = os.ReadDir(aiDir)
+	if err != nil {
+		log.Println(err)
+	}
+	for _, f := range files {
+		if !strings.HasPrefix(f.Name(), getConfigStr("ScanAI", "ResultFile")) {
+			continue
+		}
+		log.Println(f.Name())
+		// readRecord(dir + f.Name())  //todo
 	}
 }
 
