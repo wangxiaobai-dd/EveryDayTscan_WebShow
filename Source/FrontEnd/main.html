@@ -28,6 +28,11 @@
 								</ul>
 							</div>
 						</div>
+						<div class="col-md-1">
+							<button class="btn btn-info" v-bind:class="{'active': isAICheck}" v-on:click="toggleAICheck">
+								AI 检查结果
+							</button>
+						</div>
 						<div class="col-md-3" id="pag">
 								<ul class="pagination">
 									<li>
@@ -42,7 +47,7 @@
 								</ul>
 						</div>
 					<div id="result" v-cloak>
-						<table class="table table-hover">
+						<table v-if="!isAICheck" class="table table-hover">
 							<thead>
 								<tr>
 									<th></th>
@@ -60,6 +65,10 @@
 								</tr>
 							</tbody>
 						</table>
+
+						<div v-if="isAICheck">
+
+						</div>
 					</div>
 					<script type="text/javascript" src="../FrontEnd/main.js"></script>
 				</div>

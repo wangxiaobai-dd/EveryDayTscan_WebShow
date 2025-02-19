@@ -38,9 +38,14 @@ var resultVue = new Vue({
 	el:'#result',
 	data: {
 		results: [""],
-		tmpResults: [""]
+		tmpResults: [""],
+		isAICheck: false
 	},
 	methods:{
+		toggleAICheck:function (){
+			this.isAICheck = !this.isAICheck;
+			console.log("toggle ai check")
+		},
 		getDayResult:function(){
 			axios.get('/getDay',{
 				params:{
