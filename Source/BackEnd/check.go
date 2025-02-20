@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -32,6 +31,8 @@ var recordAIMap map[string]string
 var resultMap sync.Map
 
 func init() {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+
 	var err error
 	cfg, err = ini.Load(ConfigIni)
 	if err != nil {
@@ -57,7 +58,7 @@ func init() {
 			continue
 		}
 		log.Println(f.Name())
-		readRecord(dir + f.Name())
+		readRecord(false, dir+f.Name())
 	}
 	// AI Result
 	recordAIMap = make(map[string]string)
@@ -71,17 +72,21 @@ func init() {
 			continue
 		}
 		log.Println(f.Name())
-		// readRecord(dir + f.Name())  //todo
+		readRecord(true, dir+f.Name())
 	}
 }
 
-func readRecord(path string) {
-	f, err := ioutil.ReadFile(path)
+func readRecord(ai bool, path string) {
+	f, err := os.ReadFile(path)
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
-	recordMap[getDateFromPath(path)] = string(f)
-	log.Println("readRecord,path:", path, getDateFromPath(path))
+	if ai {
+		recordAIMap[getDateFromPath(path)] = string(f)
+	} else {
+		recordMap[getDateFromPath(path)] = string(f)
+	}
+	log.Printf("readRecord,path:%s,date:%s,ai:%v", path, getDateFromPath(path), ai)
 }
 
 func getDateFromPath(path string) string {
@@ -144,7 +149,7 @@ func callScan(localTime time.Time) {
 		if err != nil {
 			log.Println(err)
 		}
-		readRecord(resultFileName)
+		readRecord(false, resultFileName)
 		log.Println("scan finish")
 	}
 }

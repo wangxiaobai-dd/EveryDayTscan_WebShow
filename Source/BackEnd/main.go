@@ -37,6 +37,17 @@ func getDayResult(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func getDayAIResult(w http.ResponseWriter, r *http.Request) {
+	date := r.FormValue("date")
+	result, ok := recordAIMap[date]
+	log.Println("getDayAIResult,date:", date)
+	if ok {
+		fmt.Fprintf(w, result)
+	} else {
+		fmt.Fprintf(w, "无数据")
+	}
+}
+
 // all records by now = record in the latest day
 func getAllResult(w http.ResponseWriter, r *http.Request) {
 	date := time.Now().Format(Format)
@@ -61,10 +72,6 @@ func getRecordDate(w http.ResponseWriter, r *http.Request) {
 	bytes, _ := json.Marshal(dates)
 	log.Println("getRecordDate", dates)
 	fmt.Fprintf(w, string(bytes))
-}
-
-func getDayAIResult(w http.ResponseWriter, r *http.Request) {
-
 }
 
 func main() {
