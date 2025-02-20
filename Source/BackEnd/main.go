@@ -43,8 +43,6 @@ func getDayAIResult(w http.ResponseWriter, r *http.Request) {
 	log.Println("getDayAIResult,date:", date)
 	if ok {
 		fmt.Fprintf(w, result)
-	} else {
-		fmt.Fprintf(w, "无数据")
 	}
 }
 

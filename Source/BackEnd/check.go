@@ -72,7 +72,7 @@ func init() {
 			continue
 		}
 		log.Println(f.Name())
-		readRecord(true, dir+f.Name())
+		readRecord(true, aiDir+f.Name())
 	}
 }
 
@@ -80,6 +80,7 @@ func readRecord(ai bool, path string) {
 	f, err := os.ReadFile(path)
 	if err != nil {
 		log.Println(err)
+		return
 	}
 	if ai {
 		recordAIMap[getDateFromPath(path)] = string(f)

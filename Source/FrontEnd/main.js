@@ -1,17 +1,15 @@
-var dates = []
-var dateIndex = -1
-var curDate = "无数据"
-var pattern = /\[.+\/(.+\/.+)\].*\((Information|Critical|Serious|Warning)\)(.+)/
+let dates = []
+let dateIndex = -1
+let curDate = "无数据"
+let pattern = /\[.+\/(.+\/.+)\].*\((Information|Critical|Serious|Warning)\)(.+)/
 
 window.onload = function () {
     getRecordDate(true)
-
 }
 
-var timer = setInterval(function () {
-    var hours = new Date().getHours();
-    var min = new Date().getMinutes();
-    console.log(hours, min)
+let timer = setInterval(function () {
+    let hours = new Date().getHours();
+    let min = new Date().getMinutes();
     if (hours === '3' && min === '0') {
         getRecordDate(true)
     }
@@ -28,7 +26,7 @@ function getRecordDate(load) {
                 console.log(dates[i])
             }
             if (load && dates.length) {
-                pagVue.selectDate(0)
+                containerVue.selectDate(0)
             }
         })
         .catch(function (error) {
@@ -36,18 +34,30 @@ function getRecordDate(load) {
         });
 }
 
-var pagVue = new Vue({
+let containerVue = new Vue({
     delimiters: ['[[', ']]'],
-    el: '#pag',
+    el: '#container',
     data: {
+        isAICheck: false,
+        results: [],
+        tmpResults: [],
+        aiResults:[],
+        selected: '昨日新增',
         date: curDate,
         disable: 0,
+    },
+    computed: {
+        buttonText() {
+            return this.isAICheck ? 'TS 检查结果' : 'AI 检查结果'
+        }
     },
     methods: {
         selectDate: function (value) {
             this.disable = 0
             if (!dates || !dates.length)
                 return
+            console.log("selectdata")
+
             if (value === 0) {
                 dateIndex = dates.length - 1
             } else if (value > 0) {
@@ -60,13 +70,88 @@ var pagVue = new Vue({
             if (dateIndex < dates.length) {
                 curDate = dates[dateIndex]
                 this.date = curDate
-                containerVue.getDayResult()
+                if(this.isAICheck)
+                    this.getDayAIResult()
+                else
+                    this.getDayResult()
             }
             if (dateIndex === 0)
                 this.disable += 1
             if (dateIndex === dates.length - 1)
                 this.disable += 2
 
+        },
+        parseAIRawResult(rawData){
+            const revisions = []
+            const blocks = rawData.split(/(REVISION:\d+\s+[^\n]+)/g);
+
+            for (let i = 1; i < blocks.length; i += 2) {
+                revisions.push({
+                    header: blocks[i].trim(),
+                    content: this.formatCodeContent(blocks[i + 1].trim())
+                })
+            }
+            return revisions
+        },
+        formatCodeContent(content) {
+            return content.replace(/```cpp\n?([\s\S]*?)```/g, (_, code) => {
+                const highlighted = hljs.highlight(code.trim(), { language: 'cpp' }).value;
+                return `<pre class="code-block"><code class="hljs cpp">${highlighted}</code></pre>`;
+            });
+        },
+        toggleAICheck: function () {
+            this.isAICheck = !this.isAICheck;
+            console.log("toggle ai check")
+            if (this.isAICheck) {
+                console.log(curDate)
+                $("#pag").show();
+                this.getDayAIResult()
+            }
+        },
+        getDayAIResult: function () {
+            axios.get('/getAIDay', {
+                params: {
+                    date: curDate
+                }
+            })
+                .then(response => {
+                    this.aiResults = this.parseAIRawResult(response.data)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        getDayResult: function () {
+            axios.get('/getDay', {
+                params: {
+                    date: curDate
+                }
+            })
+                .then(response => {
+                    this.tmpResults = response.data
+                    console.log(curDate)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        getAllResult: function () {
+            axios.get('/getAll')
+                .then(response => (this.tmpResults = response.data))
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        makeSelect: function (value) {
+            if (value === 1) {
+                this.selected = "昨日新增";
+                containerVue.selectDate(0)
+                $("#pag").show();
+            } else if (value === 2) {
+                this.selected = "全部";
+                this.getAllResult()
+                $("#pag").hide();
+            }
         }
     },
     watch: {
@@ -106,68 +191,11 @@ var pagVue = new Vue({
                 this.results.push(tmp)
             }
         }
-    }
-});
-
-var containerVue = new Vue({
-    delimiters: ['[[', ']]'],
-    el: '#container',
-    data: {
-        isAICheck: false,
-        results: [],
-        tmpResults: [],
-        tmpAIResults:[],
-        selected: '昨日新增',
     },
-    computed: {
-        buttonText() {
-            return this.isAICheck ? 'TS 检查结果' : 'AI 检查结果'
-        }
-    },
-    methods: {
-        toggleAICheck: function () {
-            this.isAICheck = !this.isAICheck;
-            console.log("toggle ai check")
-        },
-        getDayAIResult:function (){
-            axios.get('/getAIDay', {
-                params: {
-                    date: curDate
-                }
-            })
-                .then(response => (this.tmpAIResults = response.data))
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-        getDayResult: function () {
-            axios.get('/getDay', {
-                params: {
-                    date: curDate
-                }
-            })
-                .then(response => (this.tmpResults = response.data))
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-        getAllResult: function () {
-            axios.get('/getAll')
-                .then(response => (this.tmpResults = response.data))
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-        makeSelect: function (value) {
-            if (value === 1) {
-                this.selected = "昨日新增";
-                pagVue.selectDate(0)
-                $("#pag").show();
-            } else if (value === 2) {
-                this.selected = "全部";
-                this.getAllResult()
-                $("#pag").hide();
-            }
-        }
+    updated() {
+        // 自动高亮新插入的代码块
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightElement(block);
+        });
     }
 });
