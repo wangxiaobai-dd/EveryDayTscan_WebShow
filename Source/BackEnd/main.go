@@ -4,8 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"sort"
 	"time"
 )
@@ -72,6 +75,52 @@ func getRecordDate(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(bytes))
 }
 
+//func getRTC() time.Time {
+//	rtc, err := rtc.GetTime("")
+//	if err != nil {
+//		log.Println(err)
+//	}
+//	return rtc.Local()
+//}
+
+func uploadResult(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseMultipartForm(10 << 20)
+	if err != nil {
+		http.Error(w, "failed to parse form", http.StatusBadRequest)
+		return
+	}
+
+	file, handler, err := r.FormFile("file")
+	if err != nil {
+		http.Error(w, "failed to retrieve file from form", http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	uploadDir := getConfigStr("ScanAI", "UploadDir")
+	if err := os.MkdirAll(uploadDir, 0755); err != nil {
+		http.Error(w, "failed to create upload directory", http.StatusInternalServerError)
+		return
+	}
+
+	filePath := filepath.Join(uploadDir, handler.Filename)
+	dst, err := os.Create(filePath)
+	if err != nil {
+		http.Error(w, "failed to create file on server", http.StatusInternalServerError)
+		return
+	}
+	defer dst.Close()
+
+	_, err = io.Copy(dst, file)
+	if err != nil {
+		http.Error(w, "failed to save file", http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprintf(w, "upload file successfully: %s\n", handler.Filename)
+	log.Printf("receive file successfully, file:%s", handler.Filename)
+}
+
 func main() {
 
 	http.HandleFunc("/", showPage)
@@ -79,10 +128,11 @@ func main() {
 	http.HandleFunc("/getAll", getAllResult)
 	http.HandleFunc("/getRecord", getRecordDate)
 	http.HandleFunc("/getAIDay", getDayAIResult)
+	http.HandleFunc("/upload", uploadResult)
 	http.Handle("/Plugin/", http.StripPrefix("/Plugin/", http.FileServer(http.Dir(Plugin))))
 	http.Handle("/FrontEnd/", http.StripPrefix("/FrontEnd/", http.FileServer(http.Dir(FrontEnd))))
 	//generateDayResult(getFormatRTC())
-
+	//getRTC()
 	ticker := time.NewTicker(time.Second * 60)
 	defer ticker.Stop()
 	go func() {
@@ -95,4 +145,5 @@ func main() {
 	if err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}
+
 }
