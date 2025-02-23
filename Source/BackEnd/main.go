@@ -69,19 +69,16 @@ func getRecordDate(w http.ResponseWriter, r *http.Request) {
 	for date, _ := range recordMap {
 		dates = append(dates, date)
 	}
+	for date, _ := range recordAIMap {
+		if _, ok := recordMap[date]; !ok {
+			dates = append(dates, date)
+		}
+	}
 	sort.Strings(dates)
 	bytes, _ := json.Marshal(dates)
 	log.Println("getRecordDate", dates)
 	fmt.Fprintf(w, string(bytes))
 }
-
-//func getRTC() time.Time {
-//	rtc, err := rtc.GetTime("")
-//	if err != nil {
-//		log.Println(err)
-//	}
-//	return rtc.Local()
-//}
 
 func uploadResult(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseMultipartForm(10 << 20)
@@ -131,13 +128,11 @@ func main() {
 	http.HandleFunc("/upload", uploadResult)
 	http.Handle("/Plugin/", http.StripPrefix("/Plugin/", http.FileServer(http.Dir(Plugin))))
 	http.Handle("/FrontEnd/", http.StripPrefix("/FrontEnd/", http.FileServer(http.Dir(FrontEnd))))
-	//generateDayResult(getFormatRTC())
-	//getRTC()
 	ticker := time.NewTicker(time.Second * 60)
 	defer ticker.Stop()
 	go func() {
 		for range ticker.C {
-			//checkScan()
+			// checkScan()
 		}
 	}()
 
