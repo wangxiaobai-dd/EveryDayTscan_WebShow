@@ -45,10 +45,17 @@ let containerVue = new Vue({
         selected: '昨日新增',
         date: curDate,
         disable: 0,
+        isDump : true,
+        dumpVersions:[],
+        selectedDumpVersion: 0,
+        dumpContent: '',
     },
     computed: {
         buttonText() {
             return this.isAICheck ? 'TS 检查结果' : 'AI 检查结果'
+        },
+        dumpText() {
+            return this.isDump ? 'Dump 结果' : 'TS 检查结果'
         }
     },
     methods: {
@@ -108,6 +115,14 @@ let containerVue = new Vue({
                 this.getDayAIResult()
             }
         },
+        toggleDump: function () {
+            this.isDump = !this.isDump;
+            if (this.isDump) {
+                console.log("toggleDump")
+                $("#pag").show();
+                this.getDumpDayVersions()
+            }
+        },
         getDayAIResult: function () {
             axios.get('/getAIDay', {
                 params: {
@@ -119,6 +134,42 @@ let containerVue = new Vue({
                 })
                 .catch(function (error) {
                     console.log(error);
+                });
+        },
+        getDumpDayVersions: function () {
+            axios.get('/getDumpDayVersions', {
+                params: {
+                    date: curDate
+                }
+            })
+                .then(response => {
+                    this.versions = response.data.versions;
+                    console.log(this.versions)
+
+                    if (this.selectedDumpVersion === 0 && this.versions.length > 0) {
+                        this.selectedDumpVersion = this.versions[0].version;
+                        console.log(this.selectedDumpVersion)
+                        this.getDumpDayResult()
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        getDumpDayResult: function (){
+            axios.get('/getDumpDay', {
+                params: {
+                    date: curDate,
+                    version: this.selectedDumpVersion
+                }
+            })
+                .then(response => {
+                    this.dumpContent = response.data;
+                })
+                .catch(function (error) {
+                    this.selectedDumpVersion = 0
+                    console.error('获取内容失败:', error);
+                    this.dumpContent = '<p class="error">内容加载失败</p>';
                 });
         },
         getDayResult: function () {

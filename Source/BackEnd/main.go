@@ -10,6 +10,8 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -74,6 +76,11 @@ func getRecordDate(w http.ResponseWriter, r *http.Request) {
 			dates = append(dates, date)
 		}
 	}
+	for date, _ := range recordDumpMap {
+		if _, ok := recordMap[date]; !ok {
+			dates = append(dates, date)
+		}
+	}
 	sort.Strings(dates)
 	bytes, _ := json.Marshal(dates)
 	log.Println("getRecordDate", dates)
@@ -94,7 +101,12 @@ func uploadResult(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	uploadDir := getConfigStr("ScanAI", "UploadDir")
+	var uploadDir string
+	if strings.HasPrefix(handler.Filename, getConfigStr("ScanAI", "ResultFile")) {
+		uploadDir = getConfigStr("ScanAI", "UploadDir")
+	} else {
+		uploadDir = getConfigStr("Dump", "UploadDir")
+	}
 	if err := os.MkdirAll(uploadDir, 0755); err != nil {
 		http.Error(w, "failed to create upload directory", http.StatusInternalServerError)
 		return
@@ -118,6 +130,61 @@ func uploadResult(w http.ResponseWriter, r *http.Request) {
 	log.Printf("receive file successfully, file:%s", handler.Filename)
 }
 
+func getDumpDayResult(w http.ResponseWriter, r *http.Request) {
+	date := r.URL.Query().Get("date")
+	version := r.URL.Query().Get("version")
+
+	if _, err := time.Parse("2006-01-02", date); err != nil {
+		http.Error(w, "invalid date", http.StatusBadRequest)
+		return
+	}
+
+	verNum, err := strconv.Atoi(version)
+	if err != nil || verNum < 1 {
+		http.Error(w, "invalid version", http.StatusBadRequest)
+		return
+	}
+
+	versions := recordDumpMap[date]
+
+	for _, v := range versions {
+		if v.Version == verNum {
+			content, err := os.ReadFile(v.File)
+			if err != nil {
+				http.Error(w, "file read error", http.StatusInternalServerError)
+				return
+			}
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+			w.Write(content)
+			return
+		}
+	}
+
+	http.Error(w, "version not found", http.StatusNotFound)
+}
+
+type VersionResponse struct {
+	Versions []DumpVersion `json:"versions"`
+	Error    string        `json:"error,omitempty"`
+}
+
+func getDumpDayVersions(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	date := r.URL.Query().Get("date")
+	if _, err := time.Parse("2006-01-02", date); err != nil {
+		http.Error(w, "invalid date format", http.StatusBadRequest)
+		return
+	}
+	response := VersionResponse{}
+	if versions, exists := recordDumpMap[date]; exists && len(versions) > 0 {
+		response.Versions = versions
+	} else {
+		response.Error = "No records found"
+		w.WriteHeader(http.StatusNotFound)
+	}
+	json.NewEncoder(w).Encode(response)
+}
+
 func main() {
 
 	http.HandleFunc("/", showPage)
@@ -126,6 +193,8 @@ func main() {
 	http.HandleFunc("/getRecord", getRecordDate)
 	http.HandleFunc("/getAIDay", getDayAIResult)
 	http.HandleFunc("/upload", uploadResult)
+	http.HandleFunc("/getDumpDay", getDumpDayResult)
+	http.HandleFunc("/getDumpDayVersions", getDumpDayVersions)
 	http.Handle("/Plugin/", http.StripPrefix("/Plugin/", http.FileServer(http.Dir(Plugin))))
 	http.Handle("/FrontEnd/", http.StripPrefix("/FrontEnd/", http.FileServer(http.Dir(FrontEnd))))
 	ticker := time.NewTicker(time.Second * 60)

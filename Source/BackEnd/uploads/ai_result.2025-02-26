@@ -1,0 +1,143 @@
+REVISION:1		Task 11111 测试版-测试1
+[文件名]
+`scenes/a.cpp`
+[问题代码]
+```cpp
+// 无明确的问题代码，但潜在的问题在于信号量和同步控制以及错误信息处理方面。
+```
+[修改建议]
+1. **添加信号量**：在处理关闭请求（`onWSClose`）时，使用信号量来确保线程安全地访问资源。例如，在启动关闭段时释放信号量，并在其他线程尝试关闭时等待。
+2. **错误信息处理**：
+   - 在`onWSClose`中，当遇到1005或1006的错误码时，添加更详细的错误描述。
+   - 示例：将当前打印的错误信息扩展为包含具体错误原因，如`"WebSocket connection failed: invalid close command"`。
+3. **异常处理**：
+   - 在关键操作（如读取数据、发送消息）中添加try-catch块以捕捉和处理潜在的异常。
+   - 示例：在`onWSSegment`和`onCMD`方法中，确保所有可能的操作都被正确捕获并处理。
+4. **同步控制**：
+   - 使用std::sync::Mutex或std::async互斥锁来确保信号量在不同线程之间的一致访问。
+   - 示例：在启动关闭段时，先获取信号量，然后在其他线程尝试关闭时等待。
+5. **优化错误处理**：
+   - 在`onWSClose`中，当`status_code`为1005或1006时，打印更详细的错误信息。
+   ```cpp
+   if (status_code == 1005 || status_code == 1006) {
+       std::cout << "WebSocket connection failed: invalid close command" << std::endl;
+   }
+   ```
+通过以上修改，可以改进代码的安全性和可维护性。
+
+REVISION:2		Task 22222 测试版-测试2
+[文件名]
+session/b.h
+[问题代码]
+```cpp
+void handleWSClose(EventHandler* handler) {
+    uint16_t status_code = be16toh(*(uint16_t*)close_reason);
+    const char* reason = (const char*)close_reason + 2;
+    if (status_code == 1006) reason = conn.getLastError();
+    handler->onWSClose(*this, status_code, reason);
+}
+```
+[修改建议]
+```cpp
+void handleWSClose(EventHandler* handler) {
+    // 获取会话关闭的状态码
+    uint16_t status_code = be16toh(*(uint16_t*)close_reason);
+    char const* wsCloseReason(const char* reasonPtr, uint16_t status) {
+        static_assertsizeof(close_reason) >= sizeof(uint16_t), "Insufficient close_reason length";
+        if (reasonPtr == close_reason || (status != 1006 && status != 1007)) {
+            return nullptr;
+        }
+        return reasonPtr + 2;
+    }
+    const char* reason = wsCloseReason(close_reason, status_code);
+    handler->onWSClose(*this, status_code, reason);
+}
+```
+修改说明：
+1. 添加了局部函数wsCloseReason用于获取原因字符串，增加了参数检查以防止越界访问
+2. 使用static_assert确保close_reason有足够的长度
+3. 改进了错误处理，返回null指针而非潜在空指针风险
+4. 增加了简要的注释说明各参数的作用
+5. 调整了函数参数顺序和变量命名以提高可读性
+6. 使用const char*类型更明确地表示常量字符指针
+
+REVISION:3		Task 33333 测试版-测试测试测试
+[文件名]
+session/server.cpp
+[问题代码]
+```cpp
+  // 在初始化WebSocket服务器时遇到错误：
+  if (!wsserver.init("0.0.0.0", -1, 4294967295))
+```
+[修改建议]
+```cpp
+// 更改初始化参数，使用-1表示所有接口，并指定最大连接数为某个合理的值（如1）
+if (!wsserver.init("0.0.0.0", -1, 1024)) {
+    std::cerr << "Failed to initialize WebSocket server" << std::endl;
+    exit(EXIT_FAILURE);
+}
+```
+[问题代码]
+```cpp
+  // 在处理命令时，使用全局变量admincmd_help可能导致一致性问题：
+  if (!strcmp(argv[0], "help")) {
+      resp = admincmd_help;
+  }
+```
+[修改建议]
+```cpp
+// 将admincmd_help存储在类成员中，并在方法内部直接引用
+private:
+    std::string help = "hello";
+    // 在onCMD函数中替换使用：
+    if (!strcmp(argv[0], "help")) {
+        resp = help;
+    }
+```
+[问题代码]
+```cpp
+  // 处理"stop"命令后没有返回值，可能导致后续代码无法判断服务器状态：
+  stop();
+```
+[修改建议]
+```cpp
+// 在处理"stop"命令时，设置一个标志位来指示服务器是否已停止
+std::atomic<bool> is_stopped = false;
+void stop() {
+    is_stopped = true;
+}
+int main(int argc, char** argv) {
+    if (is_stopped) {
+        std::cout << "Server stopped." << std::endl;
+    }
+}
+```
+[问题代码]
+```cpp
+  // 在处理异常情况时，直接输出错误信息可能无法提供足够的调试信息：
+  error: onWSSegment should not be called
+```
+[修改建议]
+```cpp
+// 将错误信息整合到异常处理中，并使用更明确的错误消息
+try {
+    // 正常处理逻辑
+} catch (const std::runtime_error& e) {
+    std::cerr << "WebSocket error: " << e.what() << std::endl;
+}
+```
+[问题代码]
+```cpp
+  // 在处理"echo"命令时，未检查参数数量可能导致数组越界：
+  if (argc >= 2) resp = std::string(argv[1]);
+```
+[修改建议]
+```cpp
+// 检查参数数量以避免数组越界并提供更清晰的错误信息
+if (argc < 2 || !std::strcmp(argv[0], "echo")) {
+    resp = "invalid command";
+} else if (argc >= 2) {
+    resp = std::string(argv[1]);
+}
+```
+

@@ -6,7 +6,9 @@ import (
 	"os"
 	"os/exec"
 	"os/user"
+	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -20,12 +22,28 @@ const (
 	Format    = "2006-01-02"
 )
 
+type FileType int
+
+const (
+	SCAN FileType = iota
+	AI
+	DUMP
+)
+
 var cfg *ini.File
 var checkToday bool
 
 // scan record on that day
 var recordMap map[string]string
 var recordAIMap map[string]string
+
+type DumpVersion struct {
+	Version int    `json:"version"`
+	Date    string `json:"date"`
+	File    string `json:"file"`
+}
+
+var recordDumpMap map[string][]DumpVersion
 
 // diff with previous day
 var resultMap sync.Map
@@ -58,7 +76,7 @@ func init() {
 			continue
 		}
 		log.Println(f.Name())
-		readRecord(false, dir+f.Name())
+		readRecord(SCAN, dir+f.Name())
 	}
 	// AI Result
 	recordAIMap = make(map[string]string)
@@ -72,22 +90,56 @@ func init() {
 			continue
 		}
 		log.Println(f.Name())
-		readRecord(true, aiDir+f.Name())
+		readRecord(AI, aiDir+f.Name())
+	}
+	// Dump
+	recordDumpMap = make(map[string][]DumpVersion)
+	dumpDir := getConfigStr("Dump", "UploadDir")
+	files, err = os.ReadDir(dumpDir)
+	if err != nil {
+		log.Println(err)
+	}
+	for _, f := range files {
+		if version, date, ok := parseDumpFilename(f.Name()); ok {
+			recordDumpMap[date] = append(recordDumpMap[date], DumpVersion{
+				Version: version,
+				Date:    date,
+				File:    dumpDir + f.Name(),
+			})
+			log.Println(f.Name())
+		}
 	}
 }
 
-func readRecord(ai bool, path string) {
+func parseDumpFilename(name string) (version int, date string, ok bool) {
+	pattern := regexp.MustCompile(`^(\d+)-dump\.(\d{4}-\d{2}-\d{2})\.html$`)
+	matches := pattern.FindStringSubmatch(name)
+	if len(matches) != 3 {
+		return 0, "", false
+	}
+
+	version, _ = strconv.Atoi(matches[1])
+	date = matches[2]
+	if _, err := time.Parse("2006-01-02", date); err != nil {
+		return 0, "", false
+	}
+	return version, date, true
+}
+
+func readRecord(fileType FileType, path string) {
 	f, err := os.ReadFile(path)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	if ai {
+	if fileType == AI {
 		recordAIMap[getDateFromPath(path)] = string(f)
-	} else {
+	} else if fileType == SCAN {
 		recordMap[getDateFromPath(path)] = string(f)
+	} else if fileType == DUMP {
+
 	}
-	log.Printf("readRecord,path:%s,date:%s,ai:%v", path, getDateFromPath(path), ai)
+	log.Printf("readRecord,path:%s,date:%s,fileType:%v", path, getDateFromPath(path), fileType)
 }
 
 func getDateFromPath(path string) string {
@@ -150,7 +202,7 @@ func callScan(localTime time.Time) {
 		if err != nil {
 			log.Println(err)
 		}
-		readRecord(false, resultFileName)
+		readRecord(SCAN, resultFileName)
 		log.Println("scan finish")
 	}
 }

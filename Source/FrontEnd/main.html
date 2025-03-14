@@ -38,6 +38,12 @@
                         [[buttonText]]
                     </button>
                 </div>
+                <div class="col-md-1" style="padding-left: 50px; padding-right: 100px">
+                    <button class="btn btn-warning" v-bind:class="{isDump}" v-on:click="getDumpDayVersions()">
+                        [[dumpText]]
+                    </button>
+
+                </div>
                 <div class="col-md-3" id="pag">
                     <ul class="pagination">
                         <li>
@@ -91,6 +97,7 @@
                             <div class="ai-title">无AI代码审查数据</div>
                         </div>
                     </div>
+                    <div v-if="isDump" class="dump-content" v-html="dumpContent"></div>
                 </div>
                 <script type="text/javascript" src="../FrontEnd/main.js"></script>
             </div>
