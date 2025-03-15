@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.tree { padding: 20px; font-family: Segoe UI, sans-serif; }
+.node { padding: 3px 0; position: relative; user-select: none; }
+.node-header { cursor: pointer; display: flex; align-items: center; outline: none; }
+.node-header:hover { background: rgba(245, 245, 245, 0.8); }
+.arrow { width: 12px; height: 12px; margin-right: 4px; transition: transform 0.2s; }
+.collapsed .arrow { transform: rotate(-90deg); }
+.children { margin-left: 24px; display: block; position: relative; }
+.collapsed .children { display: none; }
+.heat-text {   padding: 2px 8px; border-radius: 3px;   color: black; transition: background 0.2s; }
+.overlay {   position: fixed; top: 0; right: -400px; width: 400px; height: 100%;   background: white; box-shadow: -4px 0 15px rgba(0,0,0,0.2), -10px 0 20px rgba(0,0,0,0.1);   transition: right 0.3s; padding: 20px; box-sizing: border-box;   display: flex; flex-direction: column; z-index: 100; }
+.overlay.active { right: 0; }
+.overlay-header {   display: flex; justify-content: space-between;   align-items: center; margin-bottom: 20px; padding-bottom: 10px;   border-bottom: 1px solid #eee; }
+.overlay-header h2 { margin: 0; font-size: 20px; color: #333; }
+.close-btn {   background: none; border: none; cursor: pointer;   font-size: 24px; color: #666; padding: 0; }
+.close-btn:hover { color: #000; }
+.overlay-content {   flex: 1; overflow-y: auto; padding-right: 10px; }
+.detail-block {   margin-bottom: 15px; padding-bottom: 15px;   border-bottom: 1px solid #eee; }
+.detail-block:last-child { border-bottom: none; }
+.detail-block p { margin: 5px 0; font-size: 14px; color: #555; }
+.detail-block strong { color: #333; }
+.tree-line {   position: absolute; background: #ddd; }
+.tree-line.vertical {   width: 2px; height: 100%; top: 0; left: -12px; }
+.tree-line.horizontal {   width: 12px; height: 2px; top: 50%; left: -12px; }
+</style>
+</head>
+<body>
+<div id='detailOverlay' class='overlay'>
+  <div class='overlay-header'>
+    <h2>Node Details</h2>
+    <button class='close-btn' onclick='hideDetail()'>&times;</button>
+  </div>
+  <div id='detailContent' class='overlay-content'></div>
+</div>
+<div class='tree'>
+<div class='node collapsible'>
+  <div class='node-header' data-details='[{"filename":"main.cpp","sourceFile":"project/src/main.cpp","sourceLine":10},{"filename":"utils.h","sourceFile":"project/include/utils.h","sourceLine":5}]'>
+    <svg class='arrow' viewBox='0 0 12 12' onclick='toggleChildren(this)'>
+      <path d='M6 8L2 4H10L6 8Z' fill='#666'/>
+    </svg>
+    <span class='heat-text' style='background:#ff3333'>Root 2222<small>(80%)</small></span>
+  </div>
+  <div class='children'>
+<div class='node'>
+  <div class='tree-line vertical'></div>
+  <div class='tree-line horizontal'></div>
+  <div class='node-header' data-details='[{"filename":"helper.cpp","sourceFile":"project/src/helper.cpp","sourceLine":20}]'>
+    <span class='heat-text' style='background:#ff6666'>Child 1 <small>(60%)</small></span>
+  </div>
+</div>
+<div class='node'>
+  <div class='tree-line vertical'></div>
+  <div class='tree-line horizontal'></div>
+  <div class='node-header' data-details='[{"filename":"config.h","sourceFile":"project/include/config.h","sourceLine":15},{"filename":"config.cpp","sourceFile":"project/src/config.cpp","sourceLine":25}]'>
+    <span class='heat-text' style='background:#ff1919'>Child 2 <small>(90%)</small></span>
+  </div>
+</div>
+  </div>
+</div>
+</div>
+<script>
+function toggleChildren(btn) {
+  const parent = btn.closest('.node');
+  parent.classList.toggle('collapsed');
+}
+
+function showDetail(details) {
+  const overlay = document.getElementById('detailOverlay');
+  const content = document.getElementById('detailContent');
+  let html = '';
+  details.forEach(detail => {
+    html += `<div class='detail-block'>
+      <p><strong>Filename:</strong> ${detail.filename}</p>
+      <p><strong>Source File:</strong> ${detail.sourceFile}</p>
+      <p><strong>Source Line:</strong> ${detail.sourceLine}</p>
+    </div>`;
+  });
+  content.innerHTML = html;
+  overlay.classList.add('active');
+}
+
+function hideDetail() {
+  const overlay = document.getElementById('detailOverlay');
+  overlay.classList.remove('active');
+}
+
+document.addEventListener('contextmenu', (e) => {
+  const nodeHeader = e.target.closest('.node-header');
+  if (nodeHeader) {
+    e.preventDefault();
+    const details = JSON.parse(nodeHeader.getAttribute('data-details'));
+    showDetail(details);
+  }
+});
+
+document.addEventListener('dblclick', (e) => {
+  const nodeHeader = e.target.closest('.node-header');
+  if (nodeHeader) {
+    const arrow = nodeHeader.querySelector('.arrow');
+    if (arrow) toggleChildren(arrow);
+  }
+});
+</script>
+</body>
+</html>

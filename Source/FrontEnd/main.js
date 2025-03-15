@@ -41,11 +41,11 @@ let containerVue = new Vue({
         isAICheck: false,
         results: [],
         tmpResults: [],
-        aiResults:[],
+        aiResults: [],
         selected: '昨日新增',
         date: curDate,
         disable: 0,
-        isDump : true,
+        isDump : false,
         dumpVersions:[],
         selectedDumpVersion: 0,
         dumpContent: '',
@@ -55,7 +55,7 @@ let containerVue = new Vue({
             return this.isAICheck ? 'TS 检查结果' : 'AI 检查结果'
         },
         dumpText() {
-            return this.isDump ? 'Dump 结果' : 'TS 检查结果'
+            return this.isDump ? 'TS 检查结果' : 'Dump 结果'
         }
     },
     methods: {
@@ -77,7 +77,9 @@ let containerVue = new Vue({
             if (dateIndex < dates.length) {
                 curDate = dates[dateIndex]
                 this.date = curDate
-                if(this.isAICheck)
+                if (this.isDump)
+                    this.getDumpDayVersions()
+                else if (this.isAICheck)
                     this.getDayAIResult()
                 else
                     this.getDayResult()
@@ -88,7 +90,7 @@ let containerVue = new Vue({
                 this.disable += 2
 
         },
-        parseAIRawResult(rawData){
+        parseAIRawResult(rawData) {
             const revisions = []
             const blocks = rawData.split(/(REVISION:\d+\s+[^\n]+)/g);
 
@@ -102,7 +104,7 @@ let containerVue = new Vue({
         },
         formatCodeContent(content) {
             return content.replace(/```cpp\n?([\s\S]*?)```/g, (_, code) => {
-                const highlighted = hljs.highlight(code.trim(), { language: 'cpp' }).value;
+                const highlighted = hljs.highlight(code.trim(), {language: 'cpp'}).value;
                 return `<pre class="code-block"><code class="hljs cpp">${highlighted}</code></pre>`;
             });
         },
@@ -110,6 +112,7 @@ let containerVue = new Vue({
             this.isAICheck = !this.isAICheck;
             console.log("toggle ai check")
             if (this.isAICheck) {
+                this.isDump = false
                 console.log(curDate)
                 $("#pag").show();
                 this.getDayAIResult()
@@ -117,8 +120,9 @@ let containerVue = new Vue({
         },
         toggleDump: function () {
             this.isDump = !this.isDump;
+            console.log("toggle dump check")
             if (this.isDump) {
-                console.log("toggleDump")
+                this.isAICheck = false
                 $("#pag").show();
                 this.getDumpDayVersions()
             }
@@ -136,18 +140,25 @@ let containerVue = new Vue({
                     console.log(error);
                 });
         },
+        selectDumpVersion(value) {
+            console.log(value)
+            this.selectedDumpVersion = value.version
+            this.getDumpDayResult()
+        },
         getDumpDayVersions: function () {
+            this.selectedDumpVersion = 0
+            this.dumpContent = ""
             axios.get('/getDumpDayVersions', {
                 params: {
                     date: curDate
                 }
             })
                 .then(response => {
-                    this.versions = response.data.versions;
-                    console.log(this.versions)
+                    this.dumpVersions = response.data.versions;
+                    console.log(this.dumpVersions)
 
-                    if (this.selectedDumpVersion === 0 && this.versions.length > 0) {
-                        this.selectedDumpVersion = this.versions[0].version;
+                    if (this.selectedDumpVersion === 0 && this.dumpVersions && this.dumpVersions.length > 0) {
+                        this.selectedDumpVersion = this.dumpVersions[0].version;
                         console.log(this.selectedDumpVersion)
                         this.getDumpDayResult()
                     }
@@ -168,7 +179,7 @@ let containerVue = new Vue({
                 })
                 .catch(function (error) {
                     this.selectedDumpVersion = 0
-                    console.error('获取内容失败:', error);
+                    console.log('获取内容失败:', error);
                     this.dumpContent = '<p class="error">内容加载失败</p>';
                 });
         },
@@ -213,7 +224,7 @@ let containerVue = new Vue({
                 return
             }
             console.log("tmplength:", value.length)
-            for (i = 0; i < value.length; ++i) {
+            for (var i = 0; i < value.length; ++i) {
                 var arr = pattern.exec(value[i])
                 var tmp = {}
                 if (arr) {
@@ -250,3 +261,4 @@ let containerVue = new Vue({
         });
     }
 });
+

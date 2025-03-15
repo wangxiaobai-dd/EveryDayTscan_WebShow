@@ -12,6 +12,8 @@
     <script type="text/javascript" src="../../Plugin/Axios/axios.min.js"></script>
     <script type="text/javascript" src="../../Plugin/Cpp/highlight.min.js"></script>
     <script type="text/javascript" src="../../Plugin/Cpp/cpp.min.js"></script>
+    <script type="text/javascript" src="../../Plugin/Cpp/cpp.min.js"></script>
+    <script type="text/javascript" src="../../Plugin/Cpp/dump.js"></script>
 </head>
 <body>
 <div class="container" id="container">
@@ -21,7 +23,7 @@
                 <h1> 服务器代码检查</h1>
             </div>
             <div class="row clearfix margintop">
-                <div v-if="!isAICheck" class="col-md-2">
+                <div v-if="!isAICheck && !isDump" class="col-md-2">
                     <div class="btn mybtn">选项：</div>
                     <div class="btn-group" id="option">
                         <button class="btn btn-default btnfix" id="show-type">[[selected]]</button>
@@ -33,16 +35,28 @@
                         </ul>
                     </div>
                 </div>
+                <div v-if="isDump && dumpVersions" class="col-md-2">
+                    <div class="btn mybtn">版本：</div>
+                    <div class="btn-group" id="option-dump">
+                        <button class="btn btn-default btnfix">[[selectedDumpVersion]]</button>
+                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span
+                                class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li v-for="(v, index) in dumpVersions" :key="index">
+                                <a class="dropdown-item" href="#" @click.prevent="selectDumpVersion(v)">[[v.version]]</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="col-md-1">
                     <button class="btn btn-info" v-bind:class="{isAICheck}" v-on:click="toggleAICheck()">
                         [[buttonText]]
                     </button>
                 </div>
                 <div class="col-md-1" style="padding-left: 50px; padding-right: 100px">
-                    <button class="btn btn-warning" v-bind:class="{isDump}" v-on:click="getDumpDayVersions()">
+                    <button class="btn btn-warning" v-bind:class="{isDump}" v-on:click="toggleDump()">
                         [[dumpText]]
                     </button>
-
                 </div>
                 <div class="col-md-3" id="pag">
                     <ul class="pagination">
@@ -60,7 +74,7 @@
                     </ul>
                 </div>
                 <div id="result" v-cloak>
-                    <table v-if="!isAICheck" class="table table-hover result-show">
+                    <table v-if="!isAICheck && !isDump" class="table table-hover result-show">
                         <thead>
                         <tr>
                             <th></th>
@@ -97,11 +111,20 @@
                             <div class="ai-title">无AI代码审查数据</div>
                         </div>
                     </div>
-                    <div v-if="isDump" class="dump-content" v-html="dumpContent"></div>
+
+                    <div v-if="isDump" class="result-show">
+                        <div v-if="dumpContent!=''" class="dump-content result-show" v-html="dumpContent"></div>
+                        <div v-else>
+                            <div class="ai-title">无DUMP文件数据</div>
+                        </div>
+                    </div>
+
                 </div>
+
                 <script type="text/javascript" src="../FrontEnd/main.js"></script>
             </div>
         </div>
     </div>
 </body>
+
 </html>

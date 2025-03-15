@@ -180,7 +180,6 @@ func getDumpDayVersions(w http.ResponseWriter, r *http.Request) {
 		response.Versions = versions
 	} else {
 		response.Error = "No records found"
-		w.WriteHeader(http.StatusNotFound)
 	}
 	json.NewEncoder(w).Encode(response)
 }

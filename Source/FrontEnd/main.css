@@ -95,6 +95,7 @@
 	color: #2c3e50;
 	margin-bottom: 10px;
 	text-align: center;
+	margin-top: 80px;
 }
 
 .code-block {
@@ -120,4 +121,18 @@
 .hljs-comment {
 	color: #6a9955;
 	font-style: normal !important; /* 取消斜体 */
+}
+
+.dump-selector {
+	margin: 20px 0;
+	display: flex;
+	gap: 10px;
+}
+
+.dump-content {
+	margin-top: 100px;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	max-height: 70vh;
 }
